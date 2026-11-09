@@ -154,7 +154,7 @@ Esse comando cria automaticamente:
 ### 3. Acesse a aplicação
 
 - Frontend: http://localhost:5173
-- Backend: http://localhost:8000/api/
+- Backend: http://localhost:8000/api/v1/
 
 ### 4. Se quiser rodar sem Docker
 
@@ -176,25 +176,25 @@ npm run dev
 ## Acesso local
 
 - Frontend: http://localhost:5173
-- Backend: http://localhost:8000/api/
+- Backend: http://localhost:8000/api/v1/
 
 ## Endpoints principais
 
 ### Proprietários
-- GET /api/proprietarios/
-- POST /api/proprietarios/
+- GET /api/v1/proprietarios/
+- POST /api/v1/proprietarios/
 
 ### Pets
-- GET /api/pets/
-- POST /api/pets/
+- GET /api/v1/pets/
+- POST /api/v1/pets/
 
 ### Canis
-- GET /api/canis/
-- POST /api/canis/
+- GET /api/v1/canis/
+- POST /api/v1/canis/
 
 ### Reservas
-- GET /api/reservas/
-- POST /api/reservas/
+- GET /api/v1/reservas/
+- POST /api/v1/reservas/
 
 ## Fluxo principal do sistema
 
