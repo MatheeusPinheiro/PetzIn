@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: petzin_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: petzin_db
+      POSTGRES_USER: petzin_user
+      POSTGRES_PASSWORD: petzin_dev_123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U petzin_user -d petzin_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: petzin_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_NAME: petzin_db
+      DB_USER: petzin_user
+      DB_PASSWORD: petzin_dev_123
+      DB_HOST: db
+      DB_PORT: "5432"
+      SECRET_KEY: django-insecure-dev-key
+      DEBUG: "True"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: sh -c "python manage.py migrate && python manage.py seed_data && python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: petzin_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+
+volumes:
+  postgres_data:
